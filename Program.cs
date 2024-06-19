@@ -72,7 +72,7 @@ class Program
         public short Bottom;
     }
 
-    // Переменные синхронизации
+    // Переменные
     static Mutex screenlock = new Mutex();
     static Semaphore bulletsem = new Semaphore(3, 3);
     static ManualResetEvent startevt = new ManualResetEvent(false);
@@ -86,7 +86,7 @@ class Program
 
     static Random rand = new Random();
 
-    // Основная функция
+
     static void Main(string[] args)
     {
         string title = $"ThreadWar - Hits: {hit}, Misses: {miss}";
