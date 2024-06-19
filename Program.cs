@@ -81,7 +81,7 @@ class Program
     static Thread mainthread = Thread.CurrentThread;
     static int hit = 0;
     static int miss = 0;
-    static char[] badchar = { '-', '\\', '|', '/' };
+    static char[] badchar = { '-', '\\', '|', '/' }; // кадры для анимированных противников
     static CONSOLE_SCREEN_BUFFER_INFO info;
 
     static Random rand = new Random();
@@ -104,7 +104,7 @@ class Program
         {
             int c, ct;
             WriteAt(x, y, '|'); // нарисовать пушку 
-            c = GetAKey(out ct); // получить символ
+            c = GetAKey(out ct); // ввод
 
             switch (c)
             {
@@ -115,24 +115,19 @@ class Program
                     Thread.Sleep(100);
                     break;
                 case 37: // Влево
-                    startevt.Set(); // Начать игру
+                    startevt.Set();
                     WriteAt(x, y, ' ');
                     while (ct-- > 0)
                         if (x > 0) x--;
                     break;
                 case 39: // Вправо
-                    startevt.Set(); // Начать игру
+                    startevt.Set();
                     WriteAt(x, y, ' ');
                     while (ct-- > 0)
                         if (x < info.dwSize.X - 1) x++;
                     break;
             }
         }
-    }
-
-    static int Random(int n0, int n1)
-    {
-        return rand.Next(n0, n1);
     }
 
     static void WriteAt(int x, int y, char c)
@@ -151,7 +146,7 @@ class Program
         while (true)
         {
             ReadConsoleInput(conin, record, 1, out eventsRead);
-            if (record[0].EventType != 1) continue; // KEY_EVENT
+            if (record[0].EventType != 1) continue; 
             if (!record[0].KeyEvent.bKeyDown) continue;
             repeatCount = record[0].KeyEvent.wRepeatCount;
             return record[0].KeyEvent.wVirtualKeyCode;
@@ -222,9 +217,9 @@ class Program
         startevt.WaitOne(15000);
         while (true)
         {
-            if (Random(0, 100) < (hit + miss) / 25 + 20)
+            if (rand.Next(0, 100) < (hit + miss) / 25 + 20)
             {
-                int y = Random(1, 10);
+                int y = rand.Next(1, 10);
                 Thread badguyThread = new Thread(new ParameterizedThreadStart(Badguy));
                 badguyThread.Start(y);
             }
